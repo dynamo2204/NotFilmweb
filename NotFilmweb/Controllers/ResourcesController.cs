@@ -25,10 +25,33 @@ namespace NotFilmweb.Controllers
         }
 
         // GET: Resources
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            var applicationDbContext = _context.Resources.Include(r => r.Category);
-            return View(await applicationDbContext.ToListAsync());
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["RatingSortParm"] = sortOrder == "Rating" ? "rating_desc" : "Rating";
+
+            var resourcesQuery = _context.Resources
+                .Include(r => r.Category)
+                .Include(r => r.Reviews)
+                .AsQueryable();
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    resourcesQuery = resourcesQuery.OrderByDescending(r => r.Title);
+                    break;
+                case "Rating":
+                    resourcesQuery = resourcesQuery.OrderBy(r => r.Reviews.Average(rev => rev.Rating));
+                    break;
+                case "rating_desc":
+                    resourcesQuery = resourcesQuery.OrderByDescending(r => r.Reviews.Average(rev => rev.Rating));
+                    break;
+                default:
+                    resourcesQuery = resourcesQuery.OrderBy(r => r.Title);
+                    break;
+            }
+
+            return View(await resourcesQuery.ToListAsync());
         }
 
         // GET: Resources/Details/5

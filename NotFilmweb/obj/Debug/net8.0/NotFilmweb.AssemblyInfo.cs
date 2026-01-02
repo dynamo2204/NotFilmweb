@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NotFilmweb")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+29ec9aab5b07097a30a1d181b28e810f0cf94c8c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ad3a935d9c6964697fa8efdad6eac9e1116e90c6")]
 [assembly: System.Reflection.AssemblyProductAttribute("NotFilmweb")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NotFilmweb")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

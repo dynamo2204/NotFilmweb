@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NotFilmweb.Models
 {
@@ -16,5 +17,18 @@ namespace NotFilmweb.Models
         public Category Category { get; set; }
 
         public ICollection<Review> Reviews { get; set; }
+
+        [NotMapped]
+        public double AverageRating
+        {
+            get
+            {
+                if (Reviews == null || Reviews.Count == 0)
+                {
+                    return 0.0;
+                }
+                return Math.Round(Reviews.Average(r => r.Rating), 1); // Średnia zaokrąglona do 1 miejsca po przecinku
+            }
+        }
     }
 }

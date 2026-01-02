@@ -269,6 +269,7 @@ C:\Users\dynamo\source\repos\NotFilmweb\NotFilmweb\obj\Debug\net8.0\NotFilmweb.M
 C:\Users\dynamo\source\repos\NotFilmweb\NotFilmweb\obj\Debug\net8.0\NotFilmweb.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\dynamo\source\repos\NotFilmweb\NotFilmweb\obj\Debug\net8.0\NotFilmweb.RazorAssemblyInfo.cache
 C:\Users\dynamo\source\repos\NotFilmweb\NotFilmweb\obj\Debug\net8.0\NotFilmweb.RazorAssemblyInfo.cs
+C:\Users\dynamo\source\repos\NotFilmweb\NotFilmweb\obj\Debug\net8.0\NotFilmweb.sourcelink.json
 C:\Users\dynamo\source\repos\NotFilmweb\NotFilmweb\obj\Debug\net8.0\rjimswa.dswa.cache.json
 C:\Users\dynamo\source\repos\NotFilmweb\NotFilmweb\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
 C:\Users\dynamo\source\repos\NotFilmweb\NotFilmweb\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json

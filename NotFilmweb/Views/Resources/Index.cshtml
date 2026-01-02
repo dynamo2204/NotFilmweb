@@ -13,13 +13,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">Tytuł</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Kategoria
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["RatingSortParm"]">Średnia Ocena</a>
             </th>
             <th></th>
         </tr>
@@ -31,10 +31,18 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
+                @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
+                @if(item.AverageRating > 0)
+                {
+                    <strong>@item.AverageRating / 5.0</strong> 
+                    <span class="text-muted">(@item.Reviews.Count gł.)</span>
+                }
+                else
+                {
+                    <span class="text-muted">Brak ocen</span>
+                }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
