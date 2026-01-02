@@ -1,0 +1,92 @@
+﻿@model NotFilmweb.Models.Resource
+@using NotFilmweb.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Category</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+    <hr />
+    <h3>Recenzje i Oceny</h3>
+
+    @if (Model.Reviews != null && Model.Reviews.Any())
+    {
+        <div class="list-group">
+            @foreach (var review in Model.Reviews)
+            {
+                <div class="list-group-item">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">Ocena: @review.Rating / 5</h5>
+                        <small>@review.CreatedAt.ToShortDateString()</small>
+                    </div>
+                    <p class="mb-1">@review.Comment</p>
+                    <small class="text-muted">Autor: @review.User.UserName</small>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            Brak recenzji dla tego zasobu. Bądź pierwszy!
+        </div>
+    }
+    <hr />
+    <h4>Dodaj swoją recenzję</h4>
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <form asp-action="AddReview" method="post">
+            <input type="hidden" name="resourceId" value="@Model.Id" />
+
+            <div class="form-group mb-3">
+                <label class="control-label">Twoja ocena (1-5):</label>
+                <select name="rating" class="form-control" style="width: 100px;">
+                    <option value="5">5 - Super</option>
+                    <option value="4">4 - Dobry</option>
+                    <option value="3">3 - Średni</option>
+                    <option value="2">2 - Słaby</option>
+                    <option value="1">1 - Fatalny</option>
+                </select>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label">Komentarz:</label>
+                <textarea name="comment" class="form-control" rows="3" placeholder="Napisz co myślisz..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Wyślij recenzję</button>
+        </form>
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger mt-3">
+                @TempData["Error"]
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            <a asp-area="Identity" asp-page="/Account/Login">Zaloguj się</a>, aby dodać recenzję.
+        </div>
+    }
+</div>
