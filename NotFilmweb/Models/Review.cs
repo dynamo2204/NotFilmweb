@@ -18,9 +18,9 @@ namespace NotFilmweb.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public int ResourceId { get; set; }
-        public Resource Resource { get; set; }
+        public Resource? Resource { get; set; }
 
         public string UserId { get; set; }
-        public IdentityUser User { get; set; }
+        public IdentityUser? User { get; set; }
     }
 }

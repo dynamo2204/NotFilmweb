@@ -9,6 +9,6 @@ namespace NotFilmweb.Models
 
         [Required(ErrorMessage = "Nazwa jest wymagana")]
         public string Name { get; set; }
-        public ICollection<Resource> Resources { get; set; }
+        public ICollection<Resource>? Resources { get; set; }
     }
 }

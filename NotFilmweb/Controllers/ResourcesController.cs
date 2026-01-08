@@ -27,6 +27,7 @@ namespace NotFilmweb.Controllers
         // GET: Resources
         public async Task<IActionResult> Index(string sortOrder)
         {
+
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["RatingSortParm"] = sortOrder == "Rating" ? "rating_desc" : "Rating";
 

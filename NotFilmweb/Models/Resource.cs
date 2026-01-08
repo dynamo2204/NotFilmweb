@@ -12,11 +12,10 @@ namespace NotFilmweb.Models
 
         public string Description { get; set; }
 
-        // Klucz obcy do Kategorii
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public Category? Category { get; set; }
 
-        public ICollection<Review> Reviews { get; set; }
+        public ICollection<Review>? Reviews { get; set; }
 
         [NotMapped]
         public double AverageRating
