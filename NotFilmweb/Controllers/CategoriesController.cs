@@ -25,7 +25,7 @@ namespace NotFilmweb.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            return View(await _context.Categories.Include(c => c.Resources).ToListAsync());
         }
 
         // GET: Categories/Details/5

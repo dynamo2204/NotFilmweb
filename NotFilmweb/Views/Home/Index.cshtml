@@ -1,8 +1,53 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Strona Główna";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="px-4 py-5 my-5 text-center">
+    <i class="bi bi-collection-play display-1 text-primary"></i>
+
+    <h1 class="display-5 fw-bold mt-3">Twoje centrum recenzji</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">
+            Odkrywaj najlepsze filmy, gry i książki. Dziel się swoją opinią, oceniaj zasoby
+            i sprawdzaj, co polecają inni użytkownicy. Dołącz do naszej społeczności już teraz!
+        </p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a asp-controller="Resources" asp-action="Index" class="btn btn-primary btn-lg px-4 gap-3">
+                Przeglądaj Zasoby
+            </a>
+
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-secondary btn-lg px-4">
+                    Załóż konto
+                </a>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="container px-4 py-5" id="featured-3">
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+        <div class="feature col text-center">
+            <div class="feature-icon bg-primary bg-gradient text-white rounded-3 mb-3 d-inline-block p-3">
+                <i class="bi bi-star fs-2"></i>
+            </div>
+            <h2>Oceny</h2>
+            <p>Wiarygodny system ocen w skali 1-5. Sprawdź średnią zanim poświęcisz swój czas.</p>
+        </div>
+        <div class="feature col text-center">
+            <div class="feature-icon bg-primary bg-gradient text-white rounded-3 mb-3 d-inline-block p-3">
+                <i class="bi bi-chat-dots fs-2"></i>
+            </div>
+            <h2>Recenzje</h2>
+            <p>Czytaj opinie innych i zostaw własną. Każdy głos ma znaczenie w naszym rankingu.</p>
+        </div>
+        <div class="feature col text-center">
+            <div class="feature-icon bg-primary bg-gradient text-white rounded-3 mb-3 d-inline-block p-3">
+                <i class="bi bi-shield-check fs-2"></i>
+            </div>
+            <h2>Zaufanie</h2>
+            <p>Moderowany system i zweryfikowani użytkownicy gwarantują jakość treści.</p>
+        </div>
+    </div>
 </div>

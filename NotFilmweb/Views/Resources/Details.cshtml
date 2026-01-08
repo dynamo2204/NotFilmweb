@@ -1,36 +1,128 @@
 ﻿@model NotFilmweb.Models.Resource
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.Title;
 }
 
-<h1>Details</h1>
+<div class="container mt-4">
+    <div class="p-5 mb-4 bg-light rounded-3 shadow-sm border-start border-5 border-primary">
+        <div class="container-fluid py-2">
+            <h1 class="display-5 fw-bold">@Model.Title</h1>
+            <p class="col-md-8 fs-4">@Model.Category?.Name</p>
+            <div class="d-flex align-items-center gap-3">
+                @if (Model.AverageRating > 0)
+                {
+                    <span class="badge bg-warning text-dark fs-5">
+                        <i class="bi bi-star-fill"></i> @Model.AverageRating / 5
+                    </span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary fs-6">Brak ocen</span>
+                }
 
-<div>
-    <h4>Resource</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category.Name)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-dark btn-sm">
+                        <i class="bi bi-pencil"></i> Edytuj
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-transparent fw-bold">O zasobie</div>
+                <div class="card-body">
+                    <p class="card-text lead">@Model.Description</p>
+                </div>
+            </div>
+
+            <a asp-action="Index" class="btn btn-link ps-0">&larr; Wróć do listy</a>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-chat-left-text"></i> Recenzje (@(Model.Reviews?.Count ?? 0))</span>
+                </div>
+
+                <div class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
+                    @if (Model.Reviews != null && Model.Reviews.Any())
+                    {
+                        @foreach (var review in Model.Reviews.OrderByDescending(r => r.CreatedAt))
+                        {
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <span class="text-warning">
+                                        @for (int i = 0; i < review.Rating; i++)
+                                        {
+                                            <i class="bi bi-star-fill"></i>
+                                        }
+                                        @for (int i = review.Rating; i < 5; i++)
+                                        {
+                                            <i class="bi bi-star"></i>
+                                        }
+                                    </span>
+                                    <small class="text-muted">@review.CreatedAt.ToShortDateString()</small>
+                                </div>
+                                <p class="mb-1 mt-2">@review.Comment</p>
+                                <small class="text-muted fst-italic">- @review.User?.UserName</small>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="p-3 text-center text-muted">
+                            <i class="bi bi-chat-square-dots display-4"></i>
+                            <p class="mt-2">Brak recenzji. Bądź pierwszy!</p>
+                        </div>
+                    }
+                </div>
+
+                <div class="card-footer bg-light">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <form asp-action="AddReview" method="post">
+                            <input type="hidden" name="resourceId" value="@Model.Id" />
+
+                            @if (TempData["Error"] != null)
+                            {
+                                <div class="alert alert-danger py-1 px-2 mb-2 small">
+                                    <i class="bi bi-exclamation-circle"></i> @TempData["Error"]
+                                </div>
+                            }
+
+                            <div class="mb-2">
+                                <label class="form-label small text-muted">Twoja ocena:</label>
+                                <div class="btn-group w-100" role="group">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <input type="radio" class="btn-check" name="rating" id="rating-@i" value="@i" autocomplete="off" @(i == 5 ? "checked" : "")>
+                                        <label class="btn btn-outline-warning" for="rating-@i">@i</label>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="mb-2">
+                                <textarea name="comment" class="form-control form-control-sm" rows="2" placeholder="Napisz komentarz..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-sm w-100">Wyślij recenzję</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="text-center">
+                            <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-outline-primary btn-sm w-100">Zaloguj się, aby ocenić</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
