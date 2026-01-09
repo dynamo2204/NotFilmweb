@@ -12,7 +12,6 @@ using NotFilmweb.Models;
 
 namespace NotFilmweb.Controllers
 {
-    [Authorize(Roles = Roles.Admin)]
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
