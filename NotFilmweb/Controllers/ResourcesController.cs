@@ -78,11 +78,19 @@ namespace NotFilmweb.Controllers
 
         // GET: Resources/Create
         [Authorize(Roles = Roles.Admin)]
-        public IActionResult Create()
+        [Authorize(Roles = Roles.Admin)]
+        public IActionResult Create(int? categoryId)
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewData["CategoryId"] = new SelectList(
+                _context.Categories,
+                "Id",
+                "Name",
+                categoryId
+            );
+
             return View();
         }
+
 
         // POST: Resources/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.

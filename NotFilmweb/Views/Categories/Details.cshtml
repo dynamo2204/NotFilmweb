@@ -1,44 +1,69 @@
-﻿@model NotFilmweb.Models.Resource
-@using NotFilmweb.Models
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
+﻿@model NotFilmweb.Models.Category
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.Name;
 }
 
-<h1>Details</h1>
+<div class="mb-4 d-flex justify-content-between align-items-start">
+    <div>
+        <h1 class="fw-bold">@Model.Name</h1>
+        <p class="text-muted">
+            Lista filmów w kategorii <strong>@Model.Name</strong>
+        </p>
 
-<div>
-    <h4>Category</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-    <hr />
-    <h3>Recenzje i Oceny</h3>
+        <a asp-action="Index" class="btn btn-link ps-0">
+            &larr; Wróć do kategorii
+        </a>
+    </div>
 
-    @if (Model.Reviews != null && Model.Reviews.Any())
+    @if (User.IsInRole("Admin"))
     {
-        <div class="list-group">
-            @foreach (var review in Model.Reviews)
+        <a asp-controller="Resources"
+           asp-action="Create"
+           asp-route-categoryId="@Model.Id"
+           class="btn btn-success">
+            <i class="bi bi-plus-lg"></i> Dodaj film
+        </a>
+    }
+</div>
+
+
+    @if (Model.Resources != null && Model.Resources.Any())
+    {
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var movie in Model.Resources)
             {
-                <div class="list-group-item">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">Ocena: @review.Rating / 5</h5>
-                        <small>@review.CreatedAt.ToShortDateString()</small>
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">@movie.Title</h5>
+                            <p class="card-text text-muted">
+                                @Model.Name
+                            </p>
+                        </div>
+
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                            <div>
+                                @if (movie.AverageRating > 0)
+                                {
+                                    <span class="text-warning fw-bold">
+                                        ★ @movie.AverageRating
+                                    </span>
+                                }
+                                else
+                                {
+                                    <small class="text-muted">Brak ocen</small>
+                                }
+                            </div>
+
+                            <a asp-controller="Resources"
+                               asp-action="Details"
+                               asp-route-id="@movie.Id"
+                               class="btn btn-sm btn-outline-primary">
+                                Zobacz film
+                            </a>
+                        </div>
                     </div>
-                    <p class="mb-1">@review.Comment</p>
-                    <small class="text-muted">Autor: @review.User.UserName</small>
                 </div>
             }
         </div>
@@ -46,47 +71,7 @@
     else
     {
         <div class="alert alert-info">
-            Brak recenzji dla tego zasobu. Bądź pierwszy!
-        </div>
-    }
-    <hr />
-    <h4>Dodaj swoją recenzję</h4>
-
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <form asp-action="AddReview" method="post">
-            <input type="hidden" name="resourceId" value="@Model.Id" />
-
-            <div class="form-group mb-3">
-                <label class="control-label">Twoja ocena (1-5):</label>
-                <select name="rating" class="form-control" style="width: 100px;">
-                    <option value="5">5 - Super</option>
-                    <option value="4">4 - Dobry</option>
-                    <option value="3">3 - Średni</option>
-                    <option value="2">2 - Słaby</option>
-                    <option value="1">1 - Fatalny</option>
-                </select>
-            </div>
-
-            <div class="form-group mb-3">
-                <label class="control-label">Komentarz:</label>
-                <textarea name="comment" class="form-control" rows="3" placeholder="Napisz co myślisz..."></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Wyślij recenzję</button>
-        </form>
-
-        @if (TempData["Error"] != null)
-        {
-            <div class="alert alert-danger mt-3">
-                @TempData["Error"]
-            </div>
-        }
-    }
-    else
-    {
-        <div class="alert alert-warning">
-            <a asp-area="Identity" asp-page="/Account/Login">Zaloguj się</a>, aby dodać recenzję.
+            Brak filmów w tej kategorii.
         </div>
     }
 </div>

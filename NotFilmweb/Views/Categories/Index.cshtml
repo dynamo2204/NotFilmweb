@@ -6,34 +6,60 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Kategorie tematyczne</h1>
+
     @if (User.IsInRole("Admin"))
     {
-        <a asp-action="Create" class="btn btn-success"><i class="bi bi-plus-lg"></i> Dodaj kategorię</a>
+        <a asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-lg"></i> Dodaj kategorię
+        </a>
     }
 </div>
-
 
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
     @foreach (var item in Model)
     {
         <div class="col">
-            <div class="card h-100 border-primary mb-3" style="max-width: 20rem;">
-                <div class="card-header bg-transparent border-primary d-flex justify-content-between">
-                    <span>Temat</span>
-                    <span class="badge bg-primary rounded-pill">@(item.Resources?.Count ?? 0)</span>
-                </div>
-                <div class="card-body text-primary">
-                    <h4 class="card-title">@item.Name</h4>
-                    <p class="card-text">Przeglądaj recenzje i oceny w kategorii @item.Name.</p>
-                </div>
-                <div class="card-footer bg-transparent border-primary text-end">
+            <a asp-action="Details"
+               asp-route-id="@item.Id"
+               class="text-decoration-none text-dark">
+
+                <div class="card h-100 border-primary mb-3"
+                     style="max-width: 20rem; cursor: pointer;">
+
+                    <div class="card-header bg-transparent border-primary d-flex justify-content-between">
+                        <span>Kategoria</span>
+                        <span class="badge bg-primary rounded-pill">
+                            @(item.Resources?.Count ?? 0)
+                        </span>
+                    </div>
+
+                    <div class="card-body text-primary">
+                        <h4 class="card-title">@item.Name</h4>
+                        <p class="card-text">
+                            Przeglądaj filmy w kategorii @item.Name.
+                        </p>
+                    </div>
+
                     @if (User.IsInRole("Admin"))
                     {
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Edytuj</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Usuń</a>
+                        <div class="card-footer bg-transparent border-primary text-end">
+                            <a asp-action="Edit"
+                               asp-route-id="@item.Id"
+                               class="btn btn-sm btn-outline-secondary me-1"
+                               onclick="event.stopPropagation();">
+                                Edytuj
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@item.Id"
+                               class="btn btn-sm btn-outline-danger"
+                               onclick="event.stopPropagation();">
+                                Usuń
+                            </a>
+                        </div>
                     }
                 </div>
-            </div>
+            </a>
         </div>
     }
 </div>

@@ -36,7 +36,10 @@ namespace NotFilmweb.Controllers
             }
 
             var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(c => c.Resources)
+                    .ThenInclude(r => r.Reviews)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
             if (category == null)
             {
                 return NotFound();
